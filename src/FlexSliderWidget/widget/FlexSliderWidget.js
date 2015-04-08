@@ -1,12 +1,12 @@
 /*jslint white:true, nomen: true, plusplus: true */
-/*global mx, define, require, browser, devel, console */
+/*global mx, define, require, browser, devel, console, $ */
 /*mendix */
 /*
     FlexSliderWidget
     ========================
 
     @file      : FlexSliderWidget.js
-    @version   : 1.0
+    @version   : 1.0.1
     @author    : Marcus Groen
     @date      : Thu, 12 Mar 2015 17:58:43 GMT
     @copyright : Incentro
@@ -17,17 +17,12 @@
     FlexSlider for Mendix.
 */
 
-require({
-    packages: [{ name: 'jquery', location: '../../widgets/FlexSliderWidget/lib', main: 'jquery-1.11.2.min' },
-               { name: 'easing', location: '../../widgets/FlexSliderWidget/lib', main: 'jquery.easing' },
-               { name: 'mousewheel', location: '../../widgets/FlexSliderWidget/lib', main: 'jquery.mousewheel' },
-               { name: 'flexslider', location: '../../widgets/FlexSliderWidget/lib', main: 'jquery.flexslider-min' }]
-}, [
-    'dojo/_base/declare', 'mxui/widget/_WidgetBase', 'dijit/_TemplatedMixin', 'mxui/dom', 'dojo/dom', 'dojo/query',
+require([
+    'dojo/_base/declare', 'mxui/widget/_WidgetBase', 'mxui/dom', 'dojo/dom', 'dojo/query',
     'dojo/dom-prop', 'dojo/dom-geometry', 'dojo/dom-class', 'dojo/dom-style', 'dojo/dom-construct', 'dojo/_base/array',
-    'dojo/_base/lang', 'dojo/text', 'jquery', 'easing', 'mousewheel', 'flexslider'
-], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, domQuery, domProp, domGeom, domClass, domStyle,
-              domConstruct, dojoArray, lang, text, $, easing, mousewheel, flexslider) {
+    'dojo/_base/lang', 'dojo/text'
+], function (declare, _WidgetBase, dom, dojoDom, domQuery, domProp, domGeom, domClass, domStyle,
+              domConstruct, dojoArray, lang, text) {
     'use strict';
     
     // Declare widget's prototype.
@@ -79,46 +74,52 @@ require({
 
         // dijit._WidgetBase.postCreate is called after constructing the widget. Implement to do extra setup work.
         postCreate: function () {
-            console.log(this.id + '.postCreate');
-            
-            // Attach flexslider to target container.
-            $(this.containerString).flexslider({
-                
-                // Setup values.
-                namespace: this.namespaceString,
-                selector: this.selectorString,
-                animation: this.animationString,
-                animationLoop: this.animationLoopBoolean,
-                smoothHeigth: this.smoothHeigthBoolean,
-                startAt: this.startAtInteger,
-                slideshow: this.slideshowBoolean,
-                slideshowSpeed: this.slideshowSpeedInteger,
-                animationSpeed: this.animationSpeedInteger,
-                initDelay: this.initDelayInteger,
-                randomize: this.randomizeBoolean,
-                
-                // Usability
-                pauseOnAction: this.pauseOnActionBoolean,
-                pauseOnHover: this.pauseOnHoverBoolean,
-                useCSS: this.useCSSBoolean,
-                touch: this.touchBoolean,
-                video: this.videoBoolean,
 
-                // Primary Controls
-                controlNav: this.controlNavBoolean,
-                directionNav: this.directionNavBoolean,
-                prevText: this.prevTextString,
-                nextText: this.nextTextString
-                
+            // wait for libs
+            var waitForLibs = lang.hitch(this, function () {
+                if(typeof $ !== "undefined" && typeof jQuery.flexslider !== "undefined"){
+                    // Attach flexslider to target container.
+                    $(this.containerString).flexslider({
+
+                        // Setup values.
+                        namespace: this.namespaceString,
+                        selector: this.selectorString,
+                        animation: this.animationString,
+                        animationLoop: this.animationLoopBoolean,
+                        smoothHeigth: this.smoothHeigthBoolean,
+                        startAt: this.startAtInteger,
+                        slideshow: this.slideshowBoolean,
+                        slideshowSpeed: this.slideshowSpeedInteger,
+                        animationSpeed: this.animationSpeedInteger,
+                        initDelay: this.initDelayInteger,
+                        randomize: this.randomizeBoolean,
+
+                        // Usability
+                        pauseOnAction: this.pauseOnActionBoolean,
+                        pauseOnHover: this.pauseOnHoverBoolean,
+                        useCSS: this.useCSSBoolean,
+                        touch: this.touchBoolean,
+                        video: this.videoBoolean,
+
+                        // Primary Controls
+                        controlNav: this.controlNavBoolean,
+                        directionNav: this.directionNavBoolean,
+                        prevText: this.prevTextString,
+                        nextText: this.nextTextString
+
+                    });
+
+                    this._setupEvents();
+                } else {
+                    setTimeout(waitForLibs,250);
+                }
             });
+            setTimeout(waitForLibs,250);
             
-            this._setupEvents();
         },
 
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function (obj, callback) {
-            console.log(this.id + '.update');
-            this._contextObj = obj;
             callback();
         },
 
@@ -143,11 +144,11 @@ require({
         },
 
         _setupEvents: function () {
+            
             // Set on click event on toggle bullets.
             $(function(){
               var toggles = $(this.containerString + ' .toggle a'),
                   codes = $(this.containerString + ' .code');
-
               toggles.on("click", function(event){
                 event.preventDefault();
                 var $this = $(this);
@@ -160,6 +161,7 @@ require({
               });
               toggles.first().click();
             });
+            
         }
     });
 });
