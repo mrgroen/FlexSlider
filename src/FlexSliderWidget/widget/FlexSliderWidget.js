@@ -1,5 +1,5 @@
 /*jslint white:true, nomen: true, plusplus: true */
-/*global mx, define, require, browser, devel, console, $ */
+/*global mx, define, require, browser, devel, console, $, jQuery, setTimeout */
 /*mendix */
 /*
     FlexSliderWidget
