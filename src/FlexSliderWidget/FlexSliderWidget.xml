@@ -182,6 +182,34 @@
                 Set the text for the "next" directionNav item.
             </description>
         </property>
+        <property key="itemWidthInteger" type="integer" required="true" defaultValue="0">
+            <caption>Item Width</caption>
+            <category>Carousel Options</category>
+            <description>
+                Box-model width of individual carousel items, including horizontal borders and padding.
+            </description>
+        </property>
+        <property key="itemMarginInteger" type="integer" required="true" defaultValue="0">
+            <caption>Item Margin</caption>
+            <category>Carousel Options</category>
+            <description>
+                Margin between carousel items.
+            </description>
+        </property>
+        <property key="minItemsInteger" type="integer" required="true" defaultValue="1">
+            <caption>Min Items</caption>
+            <category>Carousel Options</category>
+            <description>
+                Minimum number of carousel items that should be visible. Items will resize fluidly when below this.
+            </description>
+        </property>
+        <property key="maxItemsInteger" type="integer" required="true" defaultValue="0">
+            <caption>Max Items</caption>
+            <category>Carousel Options</category>
+            <description>
+                Maxmimum number of carousel items that should be visible. Items will resize fluidly when above this limit.
+            </description>
+        </property>
 	</properties>
 </widget>
 
