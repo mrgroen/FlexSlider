@@ -45,6 +45,7 @@
 .flexslider {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 .flexslider .slides > li {
   display: none;
@@ -133,7 +134,7 @@ html[xmlns] .flexslider .slides {
 }
 .flex-direction-nav a:before {
   font-family: "flexslider-icon";
-  font-size: 40px;
+  font-size: 34px;
   display: inline-block;
   content: '\f001';
   color: rgba(0, 0, 0, 0.8);
